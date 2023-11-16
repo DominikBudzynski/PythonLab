@@ -1,6 +1,6 @@
 import pandas as pd
 from datasets import load_dataset
-
+import matplotlib.pyplot as plt
 
 dataset = load_dataset("imodels/credit-card")
 df = pd.DataFrame(dataset['train'])
@@ -35,9 +35,7 @@ for i in range(0, 10):
         if tenOldest.iloc[i, j] == 1.0:
             columns.append(j - 22)
 
-print(columns)
 edNames = pd.DataFrame({'education': [edDict[key] for key in columns]}, index = tenOldest.index)
-
 dfOldest = pd.DataFrame()
 dfOldest['limit_bal'] = tenOldest['limit_bal']
 dfOldest['age'] = tenOldest['age']
@@ -48,3 +46,16 @@ print(dfOldest)
 
 
 # matplotlib    /////
+fig, axs = plt.subplots(3, 1, figsize=(12,15))
+axs[0].hist(df['limit_bal'], bins = 100)
+axs[0].set_title('Limit Histrogram')
+
+axs[1].hist(df['age'], bins=60)
+axs[1].set_title('Age Histogram')
+
+axs[2].scatter(df['age'], df['limit_bal'])
+axs[2].set_title("Limit in dependence of age")
+axs[2].set_xlabel('Age')
+axs[2].set_ylabel('Limit')
+
+plt.show()
